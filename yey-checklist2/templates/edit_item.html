@@ -1,0 +1,71 @@
+{% extends "templates/base.html" %} {% block main %}
+<form action="/edit/item" method="post" class="form-horizontal">
+  <fieldset>
+    <legend>Edit Task</legend>
+
+    <div class="control-group">
+      <label class="control-label">Name</label>
+      <div class="controls">
+        <input type="text" name="title" value="{{ item.title }}"/> <span class="help-inline">Required</span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Difficulty</label>
+      <div class="controls">
+        <select name="difficulty">
+          {% for i in range(1,11) %}
+            {% if item.difficulty == i %}
+              <option selected="selected">{{ i }}</option>
+            {% else %}
+              <option>{{ i }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <span
+          class="help-inline">Ten being the most difficult</span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Description</label>
+      <div class="controls">
+        <textarea name="description">{{ item.description }}</textarea>
+        <p class="help-block">Describe what this task is.</p>
+      </div>
+    </div>
+    
+    {% if item.original %}
+    <div class="control-group">
+      <label class="control-label">Progress</label>
+      <div class="controls">
+        <select name="progress">
+          {% for i in range(0,11) %}
+            {% if item.progress == i*10 %}
+              <option selected="selected">{{ i*10 }}</option>
+            {% else %}
+              <option>{{ i*10 }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <p class="help-block">How many percent has finished?</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Describe Progress</label>
+      <div class="controls">
+        <textarea name="progress_description">{{ item.progress_description }}</textarea>
+        <p class="help-block">Describe what the progresses are.</p>
+      </div>
+    </div>
+    {% endif %}
+    
+    <input type="text" name="item_id" value="{{ item.key().id() }}" class="hide">
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <input type="button" class="btn" onclick="history.go(-1)" value="Cancel">
+    </div>
+  </fieldset>
+</form>
+{% endblock main %}

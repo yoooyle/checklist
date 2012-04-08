@@ -1,0 +1,42 @@
+.inline {
+  display: inline;
+}
+
+.rightsidenote {
+  color: #bbb;
+  font-style: italic;
+}
+
+pre.description{
+  border: none;
+  font: inherit;
+  font-size: inherit;
+  font-style: italic;
+  background-color: #fff;
+  padding: 0.3em 0.3em;
+  margin: 0 1em 0.5em;
+}
+
+.right_button {
+  float: right;
+}
+
+.span12.title {
+  margin: 0.1em 20px 0.4em;
+  
+  display: table-cell;
+  vertical-align: middle;
+}
+
+input[id$="checkbox"] {
+  margin-right: 2px;
+  margin-top: 0px
+}
+
+.nav {
+  margin-bottom: 6px;
+}
+
+.button_bottom {
+  margin-top: 0.8em;
+}

@@ -1,0 +1,31 @@
+ {% for item in items %}
+<tr>
+  <td>
+  <table class="table table-condensed table-striped">
+    <tr>
+      <td>Title</td>
+      <td>{{ item.title }}</td>
+    </tr>
+    {% if item.link %}
+    <tr>
+      <td>Link</td>
+      <td><a href="{{ item.link }}">Open</a></td>
+    </tr>
+    {% endif %} {% if item.deadline %}
+    <tr>
+      <td>Deadline</td>
+      <td>{{ item.deadline }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td>Priority</td>
+      <td>{{ item.priority }}</td>
+    </tr>
+    <tr>
+      <td>Finished</td>
+      <td>{{ item.finished }}</td>
+    </tr>
+  </table>
+  </td>
+</tr>
+{% endfor %}

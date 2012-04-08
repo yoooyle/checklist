@@ -1,0 +1,55 @@
+application: yey-checklist
+version: 3
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+libraries:
+- name: jinja2
+  version: 2.6
+
+handlers:
+- url: /statics
+  static_dir: statics
+  
+- url: /favicon\.ico
+  static_files: statics/images/favicon.ico
+  upload: static/images/favicon\.ico
+    
+- url: /
+  script: index.app
+  login: required
+
+- url: /l/.*
+  script: index.app
+  login: required
+
+- url: /sub/.*
+  script: index.app
+  login: required
+  
+- url: /create/.*
+  script: create.app
+  login: required
+  
+- url: /edit/.*
+  script: edit.app
+  login: required
+  
+- url: /delete/.*
+  script: delete.app
+  login: required 
+  
+- url: /subscribe.*
+  script: subscribe.app
+  login: required
+  
+- url: /taskqueue/.*
+  script: helpers.app
+  login: admin
+  
+- url: /.*
+  script: index.app
+  
+inbound_services:
+- warmup

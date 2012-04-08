@@ -1,0 +1,42 @@
+{% extends "templates/base.html" %} {% block main %}
+<form action="/create/item" method="post" class="form-horizontal">
+  <fieldset>
+    <legend>Create New Task on Checklist {{ checklist.title }}</legend>
+
+    <div class="control-group">
+      <label class="control-label">Name</label>
+      <div class="controls">
+        <input type="text" name="title" /> <span class="help-inline">Required</span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Difficulty</label>
+      <div class="controls">
+        <select name="difficulty">
+          {% for i in range(1,11) %}
+            <option>{{ i }}</option>
+          {% endfor %}
+        </select>
+        <span
+          class="help-inline">Ten being the most difficult</span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Description</label>
+      <div class="controls">
+        <textarea name="description"></textarea>
+        <p class="help-block">Describe what this task is.</p>
+      </div>
+    </div>
+    
+    <input type="text" value="{{ checklist.key() }}" class='hide' name="checklist">
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Create</button>
+      <input type="button" class="btn" onclick="history.go(-1)" value="Cancel">
+    </div>
+  </fieldset>
+</form>
+{% endblock main %}

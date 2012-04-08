@@ -1,0 +1,57 @@
+application: yey-checklist4
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+libraries:
+- name: jinja2
+  version: 2.6
+
+handlers:
+- url: /statics
+  static_dir: statics
+  
+- url: /favicon\.ico
+  static_files: statics/images/favicon.ico
+  upload: static/images/favicon\.ico
+
+- url: /create/.*
+  script: create.app
+  login: required
+  
+- url: /edit/.*
+  script: edit.app
+  login: required
+  
+- url: /delete/.*
+  script: delete.app
+  login: required 
+  
+- url: /subscribe
+  script: create.app
+  login: required
+  
+- url: /notifications.*
+  script: notify.app
+  login: admin
+  
+- url: /tasks/updateprogress
+  script: edit.app
+  login: admin
+  
+- url: /tasks/delete
+  script: delete.app
+  login: admin
+    
+- url: /
+  script: index.app
+  login: required
+  
+- url: /cl/.*
+  script: index.app
+  login: required  
+
+- url: /sub/.*
+  script: index.app
+  login: required

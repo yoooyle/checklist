@@ -1,0 +1,60 @@
+{% extends "templates/base.html" %} {% block main %}  {% for item in items %}
+<table id="{{ item.key().id()}}" class="table listing">
+  <tr>
+    <td rowspan="3">
+
+      <table class="table table-condensed table-striped listing wrapped">
+        <tr>
+          <td class="left">Title</td>
+          <td>{{ item.title }}</td>
+        </tr>
+
+        <tr>
+          <td class="left">Difficulty</td>
+          <td>{{ item.difficulty }}</td>
+        </tr>
+
+        {% if item.progress %}
+        <tr>
+          <td class="left">Progress</td>
+          <td>{{ item.progress }}%</td>
+        </tr>
+        {% endif %} {% if item.original %}
+        <tr>
+          <td class="left">Original</td>
+          <td><a
+            href="/cl/{{ item.checklist.key().id() }}/{{item.key().id()}}">View</a></td>
+        </tr>
+        {% endif %}
+
+        <tr>
+          <td class="left">Description</td>
+          <td>{{ item.description }}</td>
+        </tr>
+      </table>
+    </td>
+
+    <td class="right_buttons"><a class="btn btn-primary btn-full"
+      href="/cl/{{ item.checklist.key().id() }}/{{ item.key().id() }}">View</a>
+    </td>
+  </tr>
+  {% if checklist.user == user %}
+  <tr>
+    <td>
+      <a class="btn btn-warning btn-full"
+        href="/edit/item?item_id={{ item.key().id() }}">Edit</a>      
+    </td>
+  </tr>
+  {% endif %}
+  <tr>
+    {% if checklist.user == user %}
+    <td><a class="btn btn-danger btn-full"
+      onclick="deleteItem({{item.key().id()}});">Delete</a></td> {% endif %}
+  </tr>
+  </div>
+</table>
+{% endfor %} {% endblock main %}
+{% block footer %}
+<footer id="more_{{checklist.key().id()}}_{{ item_cursor }}"></footer> 
+{% endblock footer %}
+

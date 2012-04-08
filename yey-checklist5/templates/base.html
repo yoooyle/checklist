@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checklist</title>
+<link href="/statics/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<link href="/statics/mine.css" rel="stylesheet" />
+<script type="text/javascript"
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script type="text/javascript" src="/statics/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="/statics/notifier.js"></script>
+<script type="text/javascript" src="/statics/jquery.jeditable.js"></script>
+<script type="text/javascript" src="/statics/mine.js"></script>
+</head>
+
+<body>
+  {% block navbar %}
+  <!-- Navigation bar -->
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="container">
+
+        <!-- Brand Name -->
+        <a class="brand" href="/">Checklist</a>
+
+        <!--  Login/out button -->
+        <div class="btn-group pull-right">
+          {% if user %} <a class="btn dropdown-toggle" data-toggle="dropdown"
+            href="#"> {{ user.nickname() }} <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="{{ logout_url }}">Logout</a></li>
+          </ul>
+        </div>
+
+        {% if subscribe %}
+        <form action="/subscribe" method="post">
+          <input type="text" class="hide" value="{{ checklist.key().id() }}"
+            name="cl_id">
+          <button class="btn btn-primary pull-right" type="submit">Subscribe</button>
+        </form>
+        {% endif %} {% endif %}
+
+      </div>
+    </div>
+  </div>
+  {% endblock navbar %}
+
+  <!-- Main Container -->
+  <div id="main">{% block main %} {% endblock main %}</div>
+  {% block modal %} {% endblock modal %} {% block footer %} {% endblock footer
+  %}
+</body>
+</html>

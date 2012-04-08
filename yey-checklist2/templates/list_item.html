@@ -1,0 +1,44 @@
+{% extends "templates/base.html" %} {% block main %}
+
+<table class="table listing">
+  <tr>
+    <td rowspan="2">
+      <table class="table table-condensed table-striped listing wrapped">
+        <tr>
+          <td class="left">Title</td>
+          <td>{{ item.title }}</td>
+        </tr>
+
+        <tr>
+          <td class="left">Difficulty</td>
+          <td>{{ item.difficulty }}</td>
+        </tr>
+
+        {% if item.progress %}
+        <tr>
+          <td class="left">Progress</td>
+          <td>{{ item.progress }}%</td>
+        </tr>
+        {% endif %} {% if item.progress_description %}
+        <tr>
+          <td class="left">Describe progress</td>
+          <td>{{ item.progress_description }}</td>
+        </tr>
+        {% endif %} {% if item.description %}
+        <tr>
+          <td class="left">Description</td>
+          <td>{{ item.description }}</td>
+        </tr>
+        {% endif %} {% if item.original %}
+        <tr>
+          <td class="left">Source</td>
+          <td><a
+            href="/cl/{{ item.original.checklist.key().id() }}/{{item.original.key().id()}}">View</a></td>
+        </tr>
+        {% endif %}
+      </table>
+    </td>
+  </tr>
+</table>
+
+{% endblock main %}

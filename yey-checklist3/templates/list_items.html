@@ -1,0 +1,30 @@
+{% extends "templates/base.html" %} {% block main %}  {% for item in items %}
+<table id="{{ item.key().id()}}" class="table listing">
+  <tr>
+    <td rowspan="3">
+
+      <table class="table table-condensed table-striped listing wrapped">
+        <tr>
+          <td class="left">Title</td>
+          <td>{{ item.title }}</td>
+        </tr>
+
+        <tr>
+          <td class="left">Difficulty</td>
+          <td>{{ item.difficulty }}</td>
+        </tr>
+
+
+        <tr>
+          <td class="left">Description</td>
+          <td>{{ item.description }}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+{% endfor %} {% endblock main %}
+{% block footer %}
+<footer id="more_{{checklist.key().id()}}_{{ item_cursor }}"></footer> 
+{% endblock footer %}
+

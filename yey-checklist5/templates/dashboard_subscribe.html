@@ -1,0 +1,58 @@
+{% extends "templates/base.html" %} {% block main %}
+<script type="text/javascript">
+(function() {
+  sessionStorage.setItem('cursor_item', '{{ cursor_item }}');
+  sessionStorage.setItem('cl_key', '{{cl.key()}}');
+})();
+</script>
+<div class="container">
+  <div class="row">
+    <div class="span12">
+      <h2 class="inline">{{ cl.title }}</h2>
+      {% if subscribed %}
+      <button id="unsubscribe_button" class="btn btn-danger right_button"
+        onclick='subscribe("{{ cl.key().id() }}", false)'>Unsubscribe</button>
+      <button id="subscribe_button" class="btn btn-primary hide right_button"
+        onclick='subscribe("{{ cl.key().id() }}", true)'>Subscribe</button>
+      {% else %}
+      <button id="unsubscribe_button" class="btn btn-danger hide right_button"
+        onclick='subscribe("{{ cl.key().id() }}", false)'>Unsubscribe</button>
+      <button id="subscribe_button" class="btn btn-primary right_button"
+        onclick='subscribe("{{ cl.key().id() }}", true)'>Subscribe</button>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="span12">
+      {%if cl.description != None %}
+      <pre class="description">{{ cl.description }}</pre>
+      {% endif %}
+    </div>
+  </div>
+  {% for item in items %}
+  <div class="row" id="{{ item.key() }}_listing">
+    <div class="span12">
+      <div class="row">
+        <div class="span12">
+          <h4>{{ item.title }}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span12">
+          {% if item.description != None %}
+          <pre class="description">{{ item.description }}</pre>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %} {% if more_items %}
+  <div class="row">
+    <div class="span12" id="more_mytasks" style="text-align: center">
+      <a id="more_mytasks">--- load more ---</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock main %}

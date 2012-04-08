@@ -1,0 +1,72 @@
+              <div class="row" id="{{ cl.key() }}_listing">
+                <div class="span1">
+                  <input type="checkbox" />
+                </div>
+                <div class="span5">
+                  <a onclick='showEntity("{{cl.key()}}");' href='#'>{{
+                    cl.title }}</a>
+                </div>
+                <div class="span1">0+</div>
+              </div>
+
+         <div id="{{ cl.key() }}_side_details" class="hide well">
+            <div class="row">
+              <div class="span2">Title</div>
+              <div class="span3 edit_list" id="{{ cl.key()}}_title">{{
+                cl.title }}</div>
+            </div>
+            <div class="row">
+              <div class="span2">Public</div>
+              <div class="span3 edit_list_select" id="{{ cl.key() }}_public">
+                {% if cl.public %} Yes {% else %} No {% endif %}</div>
+            </div>
+
+            <div class="row">
+              <div class="span2">Description</div>
+            </div>
+            <div class="row">
+              <div class="span5 ">
+                <pre class="edit_list_area" id="{{ cl.key()}}_description">{{ cl.description }}</pre>
+              </div>
+            </div>
+            <div class="row">
+              <div class="span2">Subscribe Link</div>
+              <div class="span5 ">
+                <script type="text/javascript">
+                  document.write(window.location.origin + "/cl/subscribe/{{ cl.key().id() }}");
+                </script>
+              </div>
+            </div>
+            <div class="row">
+              <div class="span5">
+                <a class="btn btn-primary" href="/cl/{{cl.key().id()}}">Open</a>
+                <a class="btn btn-danger " href="#"
+                  onclick='delete_cl("{{ cl.key() }}")'>Delete</a>
+              </div>
+            </div>
+          </div>
+ 
+ <script type="text/javascript" class="editable_script">
+ $(document).ready(function() {
+  $('.edit_list').editable(window.location.origin + '/edit/checklistdashboard', {
+    indicator : 'Saving',
+    tooltip : 'Click to edit',
+    submit: 'Save',
+    cancel: 'Cancel',
+  });
+  $('.edit_list_select').editable(window.location.origin + '/edit/checklistdashboard', {
+    data : '{"Yes" : "Yes", "No" : "No"}',
+    type : 'select',
+    submit: 'Save',
+    cancel: 'Cancel',
+  });  
+  $('.edit_list_area').editable(window.location.origin + '/edit/checklistdashboard', {
+    indicator : 'Saving',
+    tooltip : 'Click to edit',
+    type : 'textarea',
+    cancel: 'Cancel',
+    submit: 'Save',
+    style: 'inherit',
+  })    
+})
+ </script>

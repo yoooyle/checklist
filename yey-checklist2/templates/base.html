@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checklist</title>
+<link href="/statics/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<link href="/statics/mine.css" rel="stylesheet" />
+<script type="text/javascript"
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+<script type="text/javascript" src="/statics/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="/statics/jquery.validate.js"></script>
+<script type="text/javascript" src="/statics/jquery-waypoints/waypoints.js"></script>
+<script type="text/javascript" src="/statics/notifier.js"></script>
+<script type="text/javascript" src="/statics/mine.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $('form[class*="create_stuff"]').validate();
+  yey_set_waypoint();
+  
+  $('.navbar-inner').waypoint(function(e, direction) {
+   $(this).toggleClass('sticky', direction === 'down');
+   e.stopPropagation();
+   })
+})
+</script>
+</head>
+
+<body>
+  {% block navbar %}
+  <!-- Navigation bar -->
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="container">
+
+        <!-- Brand Name -->
+        <a class="brand" href="/">New SWE Checklist</a>
+
+        <!--  Login/out button -->
+        <div class="btn-group pull-right">
+          {% if user %} <a class="btn dropdown-toggle" data-toggle="dropdown"
+            href="#"> {{ user.nickname() }} <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/notifications">Notifications</a></li>
+            <li><a href="{{ logout_url }}">Logout</a></li>
+          </ul>
+          {% endif %}
+        </div>
+
+        <!-- Create new list and new item button -->
+        {% if checklist and checklist.public and checklist.user != user %}
+        <form action="/subscribe" method="post">
+          <input type="text" class="hide" value="{{ checklist.key().id() }}"
+              name="cl_id">
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+        {% elif checklist and not checklist.source and checklist.user == user %} 
+        <a class="btn pull-right"
+          href="#create_item" data-toggle="modal">New Task</a>
+        <div class="modal fade hide" id="create_item">
+          <div class="modal-header">
+            <a class="close" data-dismiss="modal">x</a>
+            <h3>Create New Task</h3>
+          </div>
+          <div class="modal-body">
+            <form action="/create/item" method="post"
+              class="form-horizontal create_stuff">
+              <fieldset>
+                <div class="control-group">
+                  <label class="control-label">Name</label>
+                  <div class="controls">
+                    <input type="text" name="title" class="required" /> <span
+                      class="help-inline">Required</span>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Difficulty</label>
+                  <div class="controls">
+                    <select name="difficulty"> {% for i in range(1,11)
+                      %}
+                      <option>{{ i }}</option> {% endfor %}
+                    </select> <span class="help-inline">Ten being the most
+                      difficult</span>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Description</label>
+                  <div class="controls">
+                    <textarea name="description"></textarea>
+                    <p class="help-block">Describe what this task is.</p>
+                  </div>
+                </div>
+
+                <input type="text" value="{{ checklist.key() }}" class='hide'
+                  name="checklist">
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Create</button>
+                  <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+        {% elif checklists != None %}
+        <!-- List Checklists view -->
+        <a class="btn pull-right" href="#create_cl" data-toggle="modal">New
+          Checklist</a>
+        <div class="modal fade hide" id="create_cl">
+          <div class="modal-header">
+            <a class="close" data-dismiss="modal">x</a>
+            <h3>Create New Checklist</h3>
+          </div>
+          <div class="modal-body">
+            <form action="/create/checklist" method="post"
+              class="form-horizontal create_stuff">
+              <fieldset>
+                <div class="control-group">
+                  <label class="control-label">Name</label>
+                  <div class="controls">
+                    <input type="text" name="title" class="required" /> <span
+                      class="help-inline">Required</span>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Public</label>
+                  <div class="controls">
+                    <input type="checkbox" name="public" checked="checked" /> <span
+                      class="help-inline">Can other users see this?</span>
+                  </div>
+                </div>
+
+                <div class="control-group">
+                  <label class="control-label">Description</label>
+                  <div class="controls">
+                    <textarea name="description"></textarea>
+                    <p class="help-block">Describe what this list is.</p>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Create</button>
+                  <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+        {% endif %}
+
+      <!-- Add a hover help -->
+      </div>
+    </div>
+  </div>
+  {% endblock navbar %} {% block location %} {% endblock location %}
+  <!-- Main Container -->
+  <div id="main">
+  {% block main %} {% endblock main %}
+  </div> 
+  {% block modal %} {% endblock modal %}
+  {% block footer %} {% endblock footer %}
+</body>
+</html>

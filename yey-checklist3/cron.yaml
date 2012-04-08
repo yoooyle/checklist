@@ -1,0 +1,4 @@
+cron:
+- description: delete entities marked as deleted and have no other references
+  url: /tasks/delete
+  schedule: every 24 hours

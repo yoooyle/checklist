@@ -1,0 +1,5 @@
+{% extends "templates/message_base.html" %}
+{% block message %}
+<p>You have already subscribed to {{ old_checklist.title }}. View 
+<a href="/cl/{{ my_checklist.key().id() }}">yours</a></p>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "templates/base.html" %}
+{% block main %}
+<ul class="well">
+{% if notifications == [] %}
+<p>You currently have no unread notifications</p>
+{% endif %}
+{% for n in notifications %}
+<li>
+{% if n.is_cl %}
+<p>{{ n.time.strftime("%d/%m/%y %H:%M") }} {{ n.message }} 
+<a href="/cl/{{ n.item_cl.key().id() }}">View</a></p>
+{% else %}
+<p>{{ n.time.strftime("%d/%m/%y %H:%M") }} {{ n.message }} 
+<a href="/cl/{{ n.item_cl.checklist.key().id() }}/{{ n.item_cl.key().id() }}">View</a></p>
+{% endif %}
+</li>  
+{% endfor %}
+</ul>
+{% endblock main %}

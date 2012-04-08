@@ -1,0 +1,35 @@
+{% extends "templates/base.html" %} {% block main %}
+<form action="/create/checklist" method="post" class="form-horizontal">
+  <fieldset>
+    <legend>Create New Checklist</legend>
+
+    <div class="control-group">
+      <label class="control-label">Name</label>
+      <div class="controls">
+        <input type="text" name="title" /> <span class="help-inline">Required</span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Public</label>
+      <div class="controls">
+        <input type="checkbox" name="public" checked="checked" /> <span
+          class="help-inline">Can other users see this?</span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Description</label>
+      <div class="controls">
+        <textarea name="description"></textarea>
+        <p class="help-block">Describe what this list is.</p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Create</button>
+      <input type="button" class="btn" onclick="history.go(-1)" value="Cancel">
+    </div>
+  </fieldset>
+</form>
+{% endblock main %}

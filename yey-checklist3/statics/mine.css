@@ -1,0 +1,16 @@
+table .wrapped {
+   table-layout: fixed;
+   word-wrap: break-word;
+}
+
+.listing td.left {
+  width: 15%;
+}
+
+.listing td.right_buttons {
+  width: 6%
+}
+
+.btn-full {
+  width: 60%
+}

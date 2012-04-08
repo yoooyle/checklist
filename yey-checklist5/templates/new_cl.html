@@ -1,0 +1,38 @@
+          <div class="row" id="{{ cl.key() }}_listing">
+            <div class="span12">
+            <div class="row">
+              <div class="span11">
+                <h4><a href='/l/{{cl.key().id()}}'>{{ cl.title }}</a></h4>
+              </div>
+              <div class="span1 rightsidenote">0+</div>
+            </div>
+            <div class="row">
+              <div class="span11"><pre class="edit_list_area description" id="{{ cl.key() }}_description">{% if cl.description != None %}{{ cl.description }}{% else %}Click to add a description here.{% endif %}</pre>
+              </div>
+            </div>
+          </div>
+          </div>
+ <script type="text/javascript" class="editable_script">
+ $(document).ready(function() {
+  $('.edit_list').editable(window.location.origin + '/edit/checklistdashboard', {
+    indicator : 'Saving',
+    tooltip : 'Click to edit',
+    submit: 'Save',
+    cancel: 'Cancel',
+  });
+  $('.edit_list_select').editable(window.location.origin + '/edit/checklistdashboard', {
+    data : '{"Yes" : "Yes", "No" : "No"}',
+    type : 'select',
+    submit: 'Save',
+    cancel: 'Cancel',
+  });  
+  $('.edit_list_area').editable(window.location.origin + '/edit/checklistdashboard', {
+    indicator : 'Saving',
+    tooltip : 'Click to edit',
+    type : 'textarea',
+    cancel: 'Cancel',
+    submit: 'Save',
+    style: 'inherit',
+  })    
+})
+ </script>

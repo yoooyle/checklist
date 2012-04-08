@@ -1,0 +1,54 @@
+{% extends "templates/base.html" %} {% block main %} {% for cl in checklists %}
+<table class="table listing" id="{{ cl.key().id() }}">
+  <tr>
+    <td rowspan="3">
+      <table class="table table-condensed table-striped wrapped listing">
+        <tr>
+          <td class="left">Title</td>
+          <td>{{ cl.title }}</td>
+        </tr>
+
+        <tr>
+          <td class="left">Public</td>
+          <td>{{ cl.public }}</td>
+        </tr>
+
+        {% if cl.progress and cl.source %}
+        <tr>
+          <td class="left">Progress</td>
+          <td>{{ cl.progress }}%</td>
+        </tr>
+        {% endif %} {% if cl.description %}
+        <tr>
+          <td class="left">Description</td>
+          <td>{{ cl.description }}</td>
+        </tr>
+        {% endif %} {% if cl.source %}
+        <tr>
+          <td class="left">Source</td>
+          <td><a href="/cl/{{ cl.source.key().id() }}">View</a></td>
+        </tr>
+        {% endif %}
+
+      </table>
+    </td>
+    <td class="right_buttons"><a class="btn btn-primary btn-full"
+      href="/cl/{{ cl.key().id() }}">View</a></td>
+  </tr>
+  {% if cl.user == user %}
+  <tr>
+    <td>
+       <a class="btn btn-warning btn-full" href="/edit/checklist?cl_id={{ cl.key().id() }}">Edit</a>    
+    </td>
+  </tr>
+  <tr>
+    <td><a class="btn btn-danger btn-full"
+      onclick="deleteCL({{cl.key().id()}});">Delete</a></td>
+  </tr>
+  {% endif %}
+</table>
+{% endfor %} {% endblock main %}
+
+{% block footer %}
+<footer id="more_cl_{{ checklists_cursor }}"></footer> 
+{% endblock footer %}

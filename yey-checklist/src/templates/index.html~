@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Checklist</title>
+    <link href="statics/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="statics/jquery.validate.js"></script>
+    <script type="text/javascript" src="statics/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("#ChecklistForm").validate();
+        $('form[id^="ListItemForm"]').each(function(i, e) { $(e).validate(); });
+      });
+    </script>
+  </head>
+  <body>
+  
+    <!-- Navigation bar -->
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          
+          <!-- Brand Name -->        
+          <a class="brand" href="/">New SWE Checklist</a>
+          
+          <!-- Search bar -->
+          {% if user %}
+          <form class="navbar-search">
+            <input tpye="text" class="search-query" placeholder="Search">
+          </form>
+          {% endif %} 
+           
+          <!--  Login/out button -->
+          <div class="btn-group pull-right">
+            {% if user %}
+            <a class="btn dropdown-toggle" data-toggle="dropdown">            
+            {{ user.nickname }}
+            Me
+            <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{{ user_url }}">Logout</a></li>
+            </ul>
+            {% else %}
+            <a class="btn" href="{{ user_url }}">Login</a>
+            {% endif %}
+          </div>
+          
+          <!-- Create new list button and its modal-->
+          {% if user %}
+          <a class="btn pull-right" data-toggle="modal" href="#createchecklist">Create List</a>
+          <div class="modal fade hide" id="createchecklist">
+            <div class="modal-header">
+              <a class="close" data-dismiss="modal">x</a>
+              <h3>Create a new checklist</h3>
+            </div>
+            <div class="modal-body">
+              <form action="/create/checklist" method="post" class="form-horizontal" id="ChecklistForm">
+                <div class="control-group">
+                  <label class="control-label">Name</label>
+                  <div class="controls">
+                    <input class="span3 required" type="text" name="title" placeholder="A name for checklist" />
+                    <span class="help-inline">Required</span>                    
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary submit">Create</button>
+                  <button class="btn" data-dismiss="modal">Cancel</button>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <a class="close" data-dismiss="modal">Close</a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Main container -->    
+    {% if user %}
+   
+    {% if not checklists %}
+    <div class="hero-unit">
+      <p>You need to first create a checklist. Click the button on top right.</p>
+    </div>
+    {% endif %}
+
+    <!-- Navigation tabs -->
+    <div class="tabbable tabs-left">
+      <!-- Tab left side -->
+      <ul class="nav nav-tabs">
+        {% for cl in checklists %}
+          <li><a href="/#cl_{{cl.key()}}" data-toggle="tab">{{cl.title}}</a></li>
+        {% endfor %}
+      </ul>
+      <!-- Tab right side content -->
+      <div class="tab-content">
+        {% for cl in checklists %}
+        <div class="tab-pane" id="cl_{{cl.key()}}">
+          <!-- Create list item modal -->
+          <div>
+          <a class="btn" data-toggle="modal" href="#createlistitem{{ cl.key() }}">Create Item</a>
+          <div class="modal fade hide" id="createlistitem{{ cl.key() }}">
+            <div class="modal-header">
+              <a class="close" data-dismiss="modal">x</a>
+              <h3>Create a new item on checklist <strong>{{ cl.title }}</strong></h3>
+            </div>
+            <div class="modal-body">
+              <form action="/create/listitem" method="post" id="ListItemForm{{ loop.index0 }}" class="form-horizontal">
+                <div class="control-group">
+                  <label class="control-label">Name</label>
+                  <div class="controls">
+                    <input type="text" name="title" class="required"/>
+                    <span class="help-inline">Required</span>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Link</label>
+                  <div class="controls">
+                    <input type="text" name="link" class="url" />
+                    <p class="help-block">
+                      An URL related to this item.
+                    </p>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Deadline</label>
+                  <div class="controls">
+                    <!-- TODO: replace this with a date -->
+                    <input type="text" name="deadline" />
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Priority</label>
+                  <div class="controls">
+                    <select name="priority">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>                                                                  
+                    </select>
+                    <span class="help-inline">1 most important</span>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Finished</label>
+                  <div class="controls">
+                    <input type="checkbox" name="finished" />
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Description</label>
+                  <div class="controls">
+                    <textarea name="details"></textarea>                  
+                  </div>
+                </div>
+                <input type="text" value="{{ cl.key() }}" name="checklist_key" class="hide"/>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary" >Create</button>
+                  <button class="btn" data-dismiss="modal">Cancel</button>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <a class="close" data-dismiss="modal">Close</a>
+            </div>
+          </div>
+          </div>
+          <!-- Item Lists -->
+          <table class="table">
+            {% for item in items[loop.index0] %}
+            <tr>
+              <table class="table table-condensed table-striped">
+                <tr>
+                  <td>Title</td>
+                  <td>{{ item.title }}</td>
+                </tr>
+                {% if item.link %}
+                <tr>
+                  <td>Link</td>
+                  <td><a href="{{ item.link }}">Open</a></td>
+                </tr>
+                {% endif %}
+                {% if item.deadline %}
+                <tr>
+                  <td>Deadline</td>
+                  <td>{{ item.deadline }}</td>
+                </tr>
+                {% endif %}           
+                <tr>
+                  <td>Priority</td>
+                  <td>{{ item.priority }}</td>
+                </tr>
+                <tr>
+                  <td>Finished</td>
+                  <td>{{ item.finished }}</td>
+                </tr>                
+              </table>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="hero-unit">
+      <h1>Welcome to new SWEs' Checklist</h1>
+      <p>
+      This app carries new SWEs through the first few insane weeks at Google
+      and helps them keep track of their tasks. Please log in with your Google 
+      email.
+      </p>
+      <a class="btn btn-primary btn-large pull-right" href={{user_url}}>Login</a>
+    </div>
+    {% endif %}
+  </body>
+</html>

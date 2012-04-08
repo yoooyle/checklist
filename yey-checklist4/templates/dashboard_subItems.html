@@ -1,0 +1,79 @@
+{% extends "templates/base.html" %} {% block main %}
+<script type="text/javascript">
+(function() {  
+  sessionStorage.setItem('cursor_subItem', '{{ cursor_subItem }}');  
+  sessionStorage.setItem('sub_key', '{{sub.key()}}');
+})();
+</script>
+<div class="container">
+  <div class="row">
+    <div class="span7">
+      <div class="row">
+        <div class="span7">
+          <ul class="nav nav-tabs">
+            <li>My Subscription <a href="javascript:location.reload(true))">{{
+                sub.source.title }}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span7">
+          <div class="tab-content">
+            <div id="mysubItems" class="tab-pane active">
+              {% for subItem in subItems %}
+              <div class="row" id="{{ subItem.key() }}_listing">
+                <div class="span1">
+                  <input type="checkbox" />
+                </div>
+                <div class="span6">
+                  <a onClick='showEntity("{{subItem.key()}}");' href='#'>{{
+                    subItem.original.title }}</a>
+                </div>
+              </div>
+              {% endfor %}
+              <div class="row">
+                <div class="span1"></div>
+                <div class="span6" id="more_mysubItems">
+                  <a class="btn">More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="span5">
+      <ul class="nav nav-tabs">
+        <li><a href="#subItem_details" data-toggle="tab">Details</a></li>
+      </ul>
+      <div class="tab-content">
+        <div id="subItem_details" class="tab-pane active">
+          {% for subItem in subItems %}
+          <div id="{{ subItem.key() }}_side_details" class="hide">
+            <div class="row">
+              <div class="span2">Title</div>
+              <div class="span3">{{ subItem.original.title }}</div>
+            </div>
+            <div class="row">
+              <div class="span2">Difficulty</div>
+              <div class="span3">{% if subItem.original.difficulty == 1
+                %} Easy {% elif subItem.original.difficulty == 2 %} Medium {%
+                elif subItem.original.difficulty == 3 %} Hard {% endif %}</div>
+            </div>
+            <div class="row">
+              <div class="span2">Description</div>
+            </div>
+            <div class="row">
+              <div class="span5">
+                <pre>{{ subItem.original.description }}</pre>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main %}

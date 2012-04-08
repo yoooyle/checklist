@@ -1,0 +1,114 @@
+{% extends "templates/base.html" %} {% block main %}
+<script type="text/javascript">
+(function() {
+  sessionStorage.setItem('cursor_item', '{{ cursor_item }}');
+  sessionStorage.setItem('cl_key', '{{cl.key()}}');
+})();
+</script>
+<div class="container">
+  <div class="row">
+    <div class="span12">
+      <h2 class="edit_list " id="{{ cl.key()}}_title">{% if cl.title ==
+        "New Checklist" %}Click to add a title{% else %}{{ cl.title }}{% endif
+        %}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span12">
+      <pre class="edit_list_area description" id="{{ cl.key() }}_description">{%if cl.description != None %}{{ cl.description }}{% else %}Click to add a description{% endif %}</pre>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span12">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#items" data-toggle="tab">Tasks</a></li>
+        <li><a href="#subscribers" data-toggle="tab">List Admin</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content">
+    <div id="items" class="tab-pane active">
+      <div class="row">
+        <div class="span12">
+          <input placeholder="Create task: enter a task name"
+            style="width: 930px" id="create_task_input"
+            onkeypress='{if (event.keyCode == 13) {create_task()}}' />
+        </div>
+      </div>
+      {% for item in items %}
+      <div class="row" id="{{ item.key() }}_listing">
+        <div class="span12">
+          <div class="row">
+            <div class="span12 title">
+              <div class="close right_button" onclick='delete_item("{{ item.key() }}")'
+                rel="tooltip" title="delete">x</div>
+              <h4 class="edit_item inline" id="{{ item.key() }}_title">{{
+                item.title }}</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span12">
+              <pre class="edit_item_area description"
+                id="{{ item.key()}}_description">{% if item.description != None %}{{ item.description }}{% else %}Click to add a description{% endif %}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %} {% if more_items %}
+      <div class="row">
+        <div class="span1"></div>
+        <div class="span11" id="more_mytasks">
+          <a class="btn">More</a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div id="subscribers" class="tab-pane">
+      <div class="row">
+        <div class="span12">
+          <h3>Subscribe link</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span12">
+          <a href="/subscribe/{{ cl.key().id() }}"> <script
+              type="text/javascript">
+                  document.write(window.location.origin + "/subscribe/{{ cl.key().id() }}");
+                          </script>
+          </a>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="span12">
+          <h3>Subscribers</h3>
+        </div>
+      </div>
+      {% if subs|length == 0 %}
+      <div class="row">
+        <div class="span12">No subscribers.</div>
+      </div>
+      {% endif %} {% for sub in subs %}
+      <div class="row">
+        <div class="span12">
+          <a href="/sub/{{ sub.key().id()}}">{{ sub.user.nickname() }}</a> <span
+            class="rightsidenote"> {% if sub.progress != None %}
+            {{sub.progress}}% {% else %} 0% {% endif %}</span>
+        </div>
+      </div>
+      {% endfor %} <br>
+      <div class="row">
+        <div class="span12">
+          <a class="btn"
+            onclick='(function(){r = confirm("Are you sure you want to delete?"); if (r==true) {delete_cl("{{ cl.key() }}", "/");}})()'
+            onmouseover='$(this).toggleClass("btn-danger", true)'
+            onmouseout='$(this).toggleClass("btn-danger", false)'>Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main %}
